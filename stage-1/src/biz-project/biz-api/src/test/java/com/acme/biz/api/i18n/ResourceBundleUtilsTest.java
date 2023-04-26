@@ -18,6 +18,7 @@ package com.acme.biz.api.i18n;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -39,4 +40,8 @@ public class ResourceBundleUtilsTest {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("com.acme.biz.api.i18n.HardCodeResourceBundle");
         System.out.println(resourceBundle.getString("my.name"));
     }
+    /**
+     * i18n resouceBundle soft缓存 , 内存和效率的兼顾
+     * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}
+     */
 }

@@ -16,8 +16,10 @@
  */
 package com.acme.biz.web.servlet.embedded.tomcat;
 
+import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.ProtocolHandler;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 
@@ -40,6 +42,25 @@ public class MyTomcatProtocolHandlerCustomizer implements TomcatProtocolHandlerC
         if (protocolHandler instanceof AbstractProtocol) {
             AbstractProtocol protocol = (AbstractProtocol) protocolHandler;
             protocol.setMaxThreads(100);
+        }
+    }
+
+
+    static class MyTomcatProtocol2HandlerCustomizer implements TomcatConnectorCustomizer {
+
+        private final TomcatServletWebServerFactory factory;
+
+        public MyTomcatProtocol2HandlerCustomizer(TomcatServletWebServerFactory factory) {
+            this.factory = factory;
+        }
+
+
+        @Override
+        public void customize(Connector connector) {
+            ProtocolHandler protocolHandler = connector.getProtocolHandler();
+            if (protocolHandler instanceof AbstractProtocol) {
+                //xxx
+            }
         }
     }
 }
