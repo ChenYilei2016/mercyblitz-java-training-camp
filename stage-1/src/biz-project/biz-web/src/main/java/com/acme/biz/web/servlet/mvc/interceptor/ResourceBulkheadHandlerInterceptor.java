@@ -128,6 +128,16 @@ public class ResourceBulkheadHandlerInterceptor implements HandlerInterceptor, I
         Map<String, RequestMappingHandlerMapping> requestMappingHandlerMappingMap =
                 context.getBeansOfType(RequestMappingHandlerMapping.class);
         for (RequestMappingHandlerMapping requestMappingHandlerMapping : requestMappingHandlerMappingMap.values()) {
+
+            //mapping register
+
+            //handlerMethod -> requestMappingInfo
+            /**
+             * 用method
+             * @see HandlerMethod#equals(Object) 照理不需要和bean比较
+             * 用method 找到 requestMappingInfo, 以requestMappingInfo为资源可能好一点
+             */
+
             Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
             for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
                 RequestMappingInfo requestMappingInfo = entry.getKey();
