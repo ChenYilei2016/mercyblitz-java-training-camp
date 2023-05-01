@@ -17,12 +17,17 @@
 package com.acme.biz.api.interfaces;
 
 import com.acme.biz.api.model.User;
+import lombok.SneakyThrows;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 用户登录服务接口（Open Feign、Dubbo 等公用）
@@ -37,4 +42,20 @@ public interface UserLoginService {
     @PostMapping("/login")
     @Deprecated
     User login(Map<String,Object> context);
+
+    @SneakyThrows
+    public static void main(String[] args) {
+        AnnotationAttributes mergedAnnotationAttributes = AnnotatedElementUtils.getMergedAnnotationAttributes(UserLoginService.class, RequestMapping.class);
+        System.err.println(mergedAnnotationAttributes);
+
+        Set<RequestMapping> allMergedAnnotations = AnnotatedElementUtils.getAllMergedAnnotations(UserLoginService.class, RequestMapping.class);
+        System.err.println(allMergedAnnotations);
+
+        System.err.println("================");
+
+        Method login = UserLoginService.class.getDeclaredMethod("login", Map.class);
+        System.err.println(AnnotatedElementUtils.getMergedAnnotationAttributes(login, RequestMapping.class));
+
+        System.err.println(AnnotatedElementUtils.getAllMergedAnnotations(login, RequestMapping.class));
+    }
 }
