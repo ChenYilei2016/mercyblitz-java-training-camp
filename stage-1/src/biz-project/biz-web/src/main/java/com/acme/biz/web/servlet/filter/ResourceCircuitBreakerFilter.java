@@ -77,6 +77,9 @@ public class ResourceCircuitBreakerFilter implements Filter {
             return;
         }
 
+        new CircuitBreakerConfig.Builder()
+                .failureRateThreshold(80)
+                .build();
         CircuitBreaker circuitBreaker = circuitBreakersCache.computeIfAbsent(servletName, circuitBreakerRegistry::circuitBreaker);
 
         try {

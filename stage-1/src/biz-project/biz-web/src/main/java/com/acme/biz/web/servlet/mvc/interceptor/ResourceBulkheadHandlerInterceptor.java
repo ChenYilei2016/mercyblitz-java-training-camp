@@ -50,7 +50,8 @@ import java.util.concurrent.Semaphore;
  * @see SemaphoreBulkhead
  * @since 1.0.0
  */
-public class ResourceBulkheadHandlerInterceptor implements HandlerInterceptor, InitializingBean, DisposableBean, ApplicationListener<ContextRefreshedEvent> {
+public class ResourceBulkheadHandlerInterceptor implements HandlerInterceptor, InitializingBean, DisposableBean
+        , ApplicationListener<ContextRefreshedEvent> {
 
     private BulkheadConfig config;
 

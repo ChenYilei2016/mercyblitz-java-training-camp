@@ -16,6 +16,7 @@
  */
 package com.acme.biz.web.servlet.embedded.tomcat;
 
+import org.apache.catalina.startup.Tomcat;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.stereotype.Component;
