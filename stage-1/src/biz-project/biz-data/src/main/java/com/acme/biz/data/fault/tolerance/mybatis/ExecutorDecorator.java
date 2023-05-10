@@ -41,6 +41,24 @@ public abstract class ExecutorDecorator implements Executor {
 
     private Executor delegate;
 
+    public Executor myDecorate(Executor delegate) {
+        ExecutorDecorator executorDecorator = new ExecutorDecorator() {
+
+            @Override
+            protected void before(MappedStatement ms) {
+
+            }
+
+            @Override
+            protected void after(MappedStatement ms) {
+
+            }
+        };
+
+        executorDecorator.setDelegate(delegate);
+        return executorDecorator;
+    }
+
     public ExecutorDecorator() {
     }
 
