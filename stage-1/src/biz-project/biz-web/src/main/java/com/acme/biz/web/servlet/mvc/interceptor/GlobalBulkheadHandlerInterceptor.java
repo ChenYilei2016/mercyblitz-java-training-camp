@@ -19,13 +19,26 @@ package com.acme.biz.web.servlet.mvc.interceptor;
 import io.github.resilience4j.bulkhead.Bulkhead;
 import io.github.resilience4j.bulkhead.BulkheadConfig;
 import io.github.resilience4j.bulkhead.internal.SemaphoreBulkhead;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
+import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySources;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -37,9 +50,15 @@ import java.util.concurrent.Semaphore;
  * @see SemaphoreBulkhead
  * @since 1.0.0
  */
-public class GlobalBulkheadHandlerInterceptor implements HandlerInterceptor, InitializingBean, DisposableBean {
+public class GlobalBulkheadHandlerInterceptor implements HandlerInterceptor, InitializingBean, DisposableBean, ApplicationListener<EnvironmentChangeEvent>, EnvironmentAware {
 
     private Bulkhead bulkhead;
+
+    private Environment environment;
+
+    private ServerProperties origin;
+
+    private ServerProperties serverProperties;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -66,9 +85,38 @@ public class GlobalBulkheadHandlerInterceptor implements HandlerInterceptor, Ini
     public void afterPropertiesSet() throws Exception {
         BulkheadConfig config = BulkheadConfig.custom().build();
         bulkhead = Bulkhead.of("globalBulkheadHandlerInterceptor", config);
+        //自身支持修改
+        bulkhead.changeConfig(config);
+
+
+        Binder binder = new Binder(ConfigurationPropertySources.get(environment));
+        origin = binder.bind("临时占用; 应该写自己配置限流的配置前缀", ServerProperties.class).get();
+
+        //无支持动态变更配置
+        CircuitBreaker circuitBreaker = CircuitBreaker.of("test1", CircuitBreakerConfig.custom().build());
+        CircuitBreakerConfig circuitBreakerConfig = circuitBreaker.getCircuitBreakerConfig();
     }
 
     @Override
     public void destroy() throws Exception {
+    }
+
+    @Override
+    public void onApplicationEvent(EnvironmentChangeEvent event) {
+        Set<String> changeKeys = event.getKeys();
+
+        //判断自身配置有无变更
+        if (Objects.equals(origin.getPort(), serverProperties.getPort())) {
+            bulkhead.changeConfig(null);//修改配置
+
+            //修改绑定
+            Binder binder = new Binder(ConfigurationPropertySources.get(environment));
+            origin = binder.bind("临时占用; 应该写自己配置限流的配置前缀", ServerProperties.class).get();
+        }
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }

@@ -17,6 +17,7 @@
 package com.acme.biz.data.fault.tolerance.mybatis;
 
 import io.vavr.CheckedFunction0;
+import io.vavr.CheckedFunction4;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.BatchResult;
@@ -48,6 +49,9 @@ public abstract class ExecutorDecorator implements Executor {
         this.delegate = delegate;
     }
 
+    /**
+     * 0代表没参数 , 必定有个返回结果
+     */
     protected <R> R doInDelegate(MappedStatement ms, CheckedFunction0<R> action) throws SQLException {
         R result = null;
         before(ms);

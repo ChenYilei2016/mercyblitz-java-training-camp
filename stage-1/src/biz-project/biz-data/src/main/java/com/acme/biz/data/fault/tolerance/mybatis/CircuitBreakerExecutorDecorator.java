@@ -17,6 +17,7 @@
 package com.acme.biz.data.fault.tolerance.mybatis;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -31,6 +32,12 @@ public class CircuitBreakerExecutorDecorator extends ExecutorDecorator {
     @Override
     protected void before(MappedStatement ms) {
         String resourceName = getResourceName(ms);
+
+        CircuitBreakerConfig conf = CircuitBreakerConfig.custom()
+//                .ignoreException()
+                .build();
+        CircuitBreaker of = CircuitBreaker.of(resourceName, conf);
+        of.acquirePermission();
     }
 
     @Override
