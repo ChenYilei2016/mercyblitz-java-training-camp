@@ -38,25 +38,22 @@ import java.util.List;
  */
 public class ExecutorDecorators implements Executor {
 
-    private final List<ExecutorDecorator> decorators;
+    private Executor finalExecutor;
 
-    private final int lastIndex;
 
     public ExecutorDecorators(Executor delegate, List<ExecutorDecorator> decorators) {
-        this.decorators = decorators;
-        this.decorators.forEach(decorator -> decorator.setDelegate(delegate));
-        this.lastIndex = decorators.size() - 1;
+
+        for (ExecutorDecorator decorator : decorators) {
+            delegate = decorator.myDecorate(delegate);
+        }
+
+        finalExecutor = delegate;
     }
 
     @Override
     public int update(MappedStatement ms, Object parameter) throws SQLException {
         // N - 1
-        for (int i = 0; i < lastIndex; i++) {
-            ExecutorDecorator decorator = decorators.get(i);
-            decorator.update(ms, parameter);
-        }
-        ExecutorDecorator lastDecorator = decorators.get(lastIndex);
-        return lastDecorator.update(ms, parameter);
+        return finalExecutor.update(ms, parameter);
     }
 
     @Override
