@@ -28,7 +28,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.Map;
 
 /**
- * TODO Comment
+ * TODO:! Eureka的register抽象 如果没修改值, 会注册失败, 因此直接使用 serviceRegistry 还不好主动注册信息
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
@@ -50,8 +50,10 @@ public class MetadataUploadConfiguration {
 
     @Scheduled(fixedRate = 5000L, initialDelay = 10L)
     public void upload() {
+
         Map<String, String> metadata = registration.getMetadata();
         metadata.put("timestamp", String.valueOf(System.currentTimeMillis()));
+        metadata.put("cyl-2timestamp", String.valueOf(System.currentTimeMillis()));
         serviceRegistry.deregister(registration);
         serviceRegistry.register(registration);
         logger.info("Upload Registration's metadata");

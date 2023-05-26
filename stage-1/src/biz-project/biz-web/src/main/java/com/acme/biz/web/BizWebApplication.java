@@ -39,6 +39,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.lang.reflect.*;
 import java.util.List;
 
 import static org.springframework.context.support.AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME;
@@ -65,6 +66,7 @@ public class BizWebApplication implements WebMvcConfigurer {
     }
 
     public static void main(String[] args) {
+
         SpringApplication.run(BizWebApplication.class, args);
     }
 

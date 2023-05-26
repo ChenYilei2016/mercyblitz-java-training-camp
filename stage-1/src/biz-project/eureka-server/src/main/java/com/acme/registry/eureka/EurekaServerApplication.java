@@ -23,6 +23,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 /**
  * Eureka Server 启动类
  *
+ * {@link org.springframework.cloud.netflix.eureka.EurekaClientConfigBean}
+ *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */

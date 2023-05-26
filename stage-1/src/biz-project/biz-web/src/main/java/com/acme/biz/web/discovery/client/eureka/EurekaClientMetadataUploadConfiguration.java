@@ -22,6 +22,7 @@ import com.netflix.discovery.EurekaClient;
 import com.sun.management.OperatingSystemMXBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
@@ -53,14 +54,16 @@ public class EurekaClientMetadataUploadConfiguration {
 
     @PostConstruct
     public void init() {
+//        AopUtils.getTargetClass()
         this.applicationInfoManager = eurekaClient.getApplicationInfoManager();
     }
 
     @Scheduled(fixedRate = 5000L, initialDelay = 10L)
     public void upload() {
+
         InstanceInfo instanceInfo = applicationInfoManager.getInfo();
         Map<String, String> metadata = instanceInfo.getMetadata();
-        metadata.put("timestamp", String.valueOf(System.currentTimeMillis()));
+        metadata.put("cyl-1timestamp", String.valueOf(System.currentTimeMillis()));
         metadata.put("cpu-usage", String.valueOf(getCpuUsage()));
         instanceInfo.setIsDirty();
         logger.info("Upload Eureka InstanceInfo's metadata");

@@ -34,6 +34,8 @@ import java.util.Map;
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since TODO
+ * @see org.springframework.cloud.loadbalancer.core.RoundRobinLoadBalancer
+ * @see org.springframework.cloud.loadbalancer.core.RandomLoadBalancer
  */
 public class CpuUsageLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 

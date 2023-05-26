@@ -68,6 +68,7 @@ public class DynamicTomcatConfiguration implements TomcatProtocolHandlerCustomiz
 
     @PostConstruct
     public void init2() {
+        //这样是有问题的, env里的 property 数量是会变的
         Iterable<ConfigurationPropertySource> configurationPropertySources = ConfigurationPropertySources.get(environment);
         binder = new Binder(configurationPropertySources);
         bindOriginalServerProperties();
