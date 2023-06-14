@@ -21,11 +21,14 @@ import com.netflix.loadbalancer.PollingServerListUpdater;
 import com.netflix.loadbalancer.ServerListUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
  * 基于 Eureka DiscoveryEvent 事件优化 Ribbon {@link ServerListUpdater}
+ *
+ * https://github.com/alibaba/spring-cloud-alibaba/issues/1554 github的一种实现
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see PollingServerListUpdater
@@ -33,6 +36,7 @@ import java.util.Date;
  * @see StatusChangeEvent
  * @since 1.0.0
  */
+//@Component
 public class EurekaDiscoveryEventServerListUpdater implements ServerListUpdater, EurekaEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(EurekaDiscoveryEventServerListUpdater.class);

@@ -17,12 +17,14 @@
 package com.acme.biz.client.loadbalancer;
 
 import com.acme.biz.api.interfaces.UserRegistrationService;
+import com.acme.biz.api.interfaces.UserService;
 import com.acme.biz.api.model.User;
 import com.acme.biz.client.loadbalancer.ribbon.UserServiceRibbonClientConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @SpringBootApplication
 @EnableFeignClients(clients = UserRegistrationService.class)
-@RibbonClient(name = "user-service",configuration = UserServiceRibbonClientConfiguration.class)
+@RibbonClients(
+        value = {
+                @RibbonClient(name = "user-service",configuration = UserServiceRibbonClientConfiguration.class),
+                @RibbonClient(name = "user-service2",configuration = UserServiceRibbonClientConfiguration.class),
+                @RibbonClient(name = "u2")
+        }
+)
 @RestController
 public class BizRibbonClientWebApplication {
 

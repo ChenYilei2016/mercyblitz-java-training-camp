@@ -38,10 +38,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UserServiceRibbonClientConfiguration {
 
-    @Bean
-    @ConditionalOnClass(EurekaClient.class)
-    @ConditionalOnMissingBean
-    public ServerListUpdater eurekaDiscoveryEventServerListUpdater(EurekaClient eurekaClient) {
-        return new EurekaDiscoveryEventServerListUpdater(eurekaClient);
-    }
+//    @Bean
+//    @ConditionalOnClass(EurekaClient.class)
+//    @ConditionalOnMissingBean
+//    public ServerListUpdater eurekaDiscoveryEventServerListUpdater(EurekaClient eurekaClient) {
+//        return new EurekaDiscoveryEventServerListUpdater(eurekaClient);
+//    }
 }
