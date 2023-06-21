@@ -50,7 +50,6 @@ public class MetadataUploadConfiguration {
 
     @Scheduled(fixedRate = 5000L, initialDelay = 10L)
     public void upload() {
-
         Map<String, String> metadata = registration.getMetadata();
         metadata.put("timestamp", String.valueOf(System.currentTimeMillis()));
         metadata.put("cyl-2timestamp", String.valueOf(System.currentTimeMillis()));

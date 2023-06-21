@@ -36,7 +36,6 @@ import java.util.Date;
  * @see StatusChangeEvent
  * @since 1.0.0
  */
-//@Component
 public class EurekaDiscoveryEventServerListUpdater implements ServerListUpdater, EurekaEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(EurekaDiscoveryEventServerListUpdater.class);
